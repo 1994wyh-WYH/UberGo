@@ -1,0 +1,112 @@
+1.top 10 places to wait given a specific time
+
+select t.pick_longitude, t.pick_latitude, count (*) as num
+from trip t
+where DATEPART(HOUR, t.pickup_datetime) = givenHour and DATEPART(DAY, t.pickup_datetime) = givenDay and rowNum=10
+group by t.pickup_longitude
+group by t.pickup_latitude
+order by num desc
+
+2. top 10 places to wait in general
+
+select t.pickup_longitude, t.pick_latitude, count (*) as num
+from trip t
+where rowNum=10
+group by t.pickup_longitude
+group by t.pickup_latitude
+
+	
+3. What time in a day has most pickups?
+
+select t.pickup_datetime, count (DATEPART (HOUR, t.pickup_datetime))
+from trip t
+group by count(DATEPART (HOUR, t.pickup_datetime))
+
+
+4. What day of a week has most pickups?
+
+select t.pickup_datetime, count (DATEPART (weekday, t.pickup_datetime))
+from trip t
+group by count(DATEPART (weekday, t.pickup_datetime))
+
+
+5. Difference between holiday pickups and non-holiday pickups
+
+select t1.h1-t2.h2
+from 
+(select (count(*)) as h1
+from holiday h inner join trip t
+where h.holiday=1
+group by DATEPART(day, t.pickup_datetime) ) t1, 
+(select (count(*)) as h2
+from holiday h inner join trip t
+where h.holiday=0
+group by DATEPART(day, t.pickup_datetime) ) t2
+
+
+6. Whether is it likely to be busy when it rains or snows?
+
+select ts.csnow - tr.crain
+from (
+select count(*) as csnow
+from weather w inner join trip t
+on w.timestamp=t.pickup_datetime
+where w.snow=1
+) ts
+(
+select count(*) as crain
+from weather w inner join trip t
+on w.timestamp=t.pickup_datetime
+where w.rain=1
+) tr
+
+
+7. Which kind of weather will cause the most increase in passenger number?
+
+select w.condition, count(*) num, 
+from weather w inner join trip t
+group by w.condition
+oder by num
+
+
+8. As a New Yorker, where should I go to avoid crowded places given a specific time slot?
+
+select t.pick_longitude, t.pick_latitude, count (*) as num
+from trip t
+where DATEPART(HOUR, t.pickup_datetime) = givenHour and DATEPART(DAY, t.pickup_datetime) = givenDay and rowNum=10
+group by t.pickup_longitude
+group by t.pickup_latitude
+order by num asc
+
+
+9. How does holiday affect pickups?
+
+select t1.n1-t2.n2
+from
+(select count(*) n1
+from holiday h inner join trip t
+on h.Date=t.pickup_datetime) t1,
+(select count(*) n2
+from holiday h right join trip t
+on h.Day=t.pickup_datetime
+where h.Day is NULL) t2
+
+
+
+10. what is the holiday on which people are most likely to travel by Uber?
+
+select h.Holiday_Type, count(t.pickup_datetime) as num
+from holiday h right join trip t
+on h.Date=t.pickup_datetime
+where rownum=1
+group by t.pickup_datetime
+
+
+11. Given a specific weather, where is it most likely to be busy?
+
+select w.conditions, count(*) as num
+from weather w inner join trip t
+on w.timestamp=t.pickup_datetime
+where rownum=5
+group by w.conditions
+order by num
