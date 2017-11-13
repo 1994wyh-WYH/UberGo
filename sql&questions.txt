@@ -50,12 +50,14 @@ select ts.csnow - tr.crain
 from (
 select count(*) as csnow
 from weather w inner join trip t
-on w.snow=1
+on w.timestamp=t.pickup_datetime
+where w.snow=1
 ) ts
 (
 select count(*) as crain
 from weather w inner join trip t
-on w.rain=1
+on w.timestamp=t.pickup_datetime
+where w.rain=1
 ) tr
 
 
@@ -98,3 +100,13 @@ from holiday h right join trip t
 on h.Date=t.pickup_datetime
 where rownum=1
 group by t.pickup_datetime
+
+
+11. Given a specific weather, where is it most likely to be busy?
+
+select w.conditions, count(*) as num
+from weather w inner join trip t
+on w.timestamp=t.pickup_datetime
+where rownum=5
+group by w.conditions
+order by num
