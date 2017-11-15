@@ -1,33 +1,45 @@
-1.top 10 places to wait given a specific time
+1.top 10 places to wait given a specific time(represented by ”givenHour” and “givenDay”)
 
-select t.pick_longitude, t.pick_latitude, count (*) as num
+select * 
+from 
+(select t.pickup_longitude, t.pickup_latitude, count (*) as num
 from trip t
-where DATEPART(HOUR, t.pickup_datetime) = givenHour and DATEPART(DAY, t.pickup_datetime) = givenDay and rowNum=10
-group by t.pickup_longitude
-group by t.pickup_latitude
-order by num desc
+where EXTRACT(hour from t.pickup_datetime) = givenHour and EXTRACT(day from t.pickup_datetime) = givenDay 
+group by t.pickup_longitude, t.pickup_latitude
+order by num desc) 
+where rownum<=10
 
 2. top 10 places to wait in general
 
-select t.pickup_longitude, t.pick_latitude, count (*) as num
+select *
+from
+(select t.pickup_longitude, t.pickup_latitude, count (*) as num
 from trip t
-where rowNum=10
-group by t.pickup_longitude
-group by t.pickup_latitude
+group by t.pickup_longitude, t.pickup_latitude
+order by num desc)
+where rownum<=10
 
 	
 3. What time in a day has most pickups?
 
-select t.pickup_datetime, count (DATEPART (HOUR, t.pickup_datetime))
+select *
+from
+(select EXTRACT(hour from t.pickup_datetime), count (*) as num
 from trip t
-group by count(DATEPART (HOUR, t.pickup_datetime))
+group by EXTRACT(hour from t.pickup_datetime)
+order by num desc)
+where rownum=1
 
 
 4. What day of a week has most pickups?
 
-select t.pickup_datetime, count (DATEPART (weekday, t.pickup_datetime))
+select *
+from(
+select TO_CHAR(t.pickup_datetime,'D'), count (TO_CHAR(t.pickup_datetime,'D')) as count
 from trip t
-group by count(DATEPART (weekday, t.pickup_datetime))
+group by TO_CHAR(t.pickup_datetime,'D')
+order by count desc)
+where rownum=1
 
 
 5. Difference between holiday pickups and non-holiday pickups
@@ -46,17 +58,17 @@ group by DATEPART(day, t.pickup_datetime) ) t2
 
 6. Whether is it likely to be busy when it rains or snows?
 
-select ts.csnow - tr.crain
+select ts.csnow, tr.crain
 from (
 select count(*) as csnow
 from weather w inner join trip t
-on w.timestamp=t.pickup_datetime
+on w.time_stamp=t.pickup_datetime
 where w.snow=1
-) ts
+) ts,
 (
 select count(*) as crain
 from weather w inner join trip t
-on w.timestamp=t.pickup_datetime
+on w.time_stamp=t.pickup_datetime
 where w.rain=1
 ) tr
 
