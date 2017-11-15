@@ -1,0 +1,33 @@
+CREATE TABLE TRIP( 	ID CHAR(7),
+			PASSENGER_COUNT INTEGER,
+			TIME TIME
+			DATE  DATE
+			PICK_UP_NEIGHBORHOOD_ID INTEGER
+			DROP_DOWN_NEIGHBORHOOD_ID INTEGER
+			PRIMARY KEY(ID)
+
+
+CREATE TABLE WEATHER(
+    weather_id INTEGER,
+    time_stamp timestamp,
+    temp Float,
+    condition varchar(30),
+    fog INTEGER,
+    rain Integer,
+    snow Integer,
+    primary key(weather_id));
+
+  create table restaurant(
+    restaurant_id INTEGER,
+    restaurant_name varchar(150),
+    latitude Float,
+    longitude float,
+    primary key(restaurant_id));
+
+    create table holiday(
+    holiday_id INTEGER,
+    holiday_date date,
+    weekday varchar(30),
+    holiday_name varchar(50),
+    holiday_type varchar(30),
+    primary key(holiday_id));
