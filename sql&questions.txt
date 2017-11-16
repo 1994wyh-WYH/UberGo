@@ -1,4 +1,4 @@
-1.top 10 places to wait given a specific time(represented by ”givenHour” and “givenDay”)
+1. top 10 places to wait given a specific time(represented by ”givenHour” and “givenDay”)
 
 select * 
 from 
@@ -42,7 +42,7 @@ order by count desc)
 where rownum=1
 
 
-5. Difference between holiday pickups and non-holiday pickups
+***5. Difference between holiday pickups and non-holiday pickups
 
 select t1.h1-t2.h2
 from 
@@ -75,20 +75,32 @@ where w.rain=1
 
 7. Which kind of weather will cause the most increase in passenger number?
 
-select w.condition, count(*) num, 
+select tt.condition1, tt.countTotal, tt2.cday, tt.countTotal/tt2.cday as frequency
+from(
+select distinct w.condition as condition1, count(*) as countTotal
 from weather w inner join trip t
+on w.time_stamp=t.pickup_datetime
 group by w.condition
-oder by num
+) tt inner join 
+(select w.condition as condition2, count(w.condition) as cday
+from weather w
+group by w.condition) tt2 
+on tt.condition1=tt2.condition2
+where rownum<=100
+order by frequency desc
 
 
-8. As a New Yorker, where should I go to avoid crowded places given a specific time slot?
+8. As a New Yorker, where should I go to avoid crowded places given a specific time slot? (represented by ”givenHour” and “givenDay”)
 
-select t.pick_longitude, t.pick_latitude, count (*) as num
+select *
+from (
+select t.pickup_longitude, t.pickup_latitude, count (*) as num
 from trip t
-where DATEPART(HOUR, t.pickup_datetime) = givenHour and DATEPART(DAY, t.pickup_datetime) = givenDay and rowNum=10
-group by t.pickup_longitude
-group by t.pickup_latitude
+where extract(HOUR from t.pickup_datetime) = 21 and extract(DAY from t.pickup_datetime) = 6
+group by t.pickup_longitude, t.pickup_latitude
 order by num asc
+)
+where rownum<=20
 
 
 9. How does holiday affect pickups?
@@ -105,7 +117,7 @@ where h.Day is NULL) t2
 
 
 
-10. what is the holiday on which people are most likely to travel by Uber?
+10. What is the holiday on which people are most likely to travel by Uber?
 
 select h.Holiday_Type, count(t.pickup_datetime) as num
 from holiday h right join trip t
@@ -116,9 +128,14 @@ group by t.pickup_datetime
 
 11. Given a specific weather, where is it most likely to be busy?
 
-select w.conditions, count(*) as num
+select *
+from
+(
+select t.pickup_longitude, t.pickup_latitude, count(*) as num
 from weather w inner join trip t
-on w.timestamp=t.pickup_datetime
-where rownum=5
-group by w.conditions
-order by num
+on w.time_stamp=t.pickup_datetime
+where w.condition='Clear'
+group by t.pickup_longitude, t.pickup_latitude
+order by num desc
+)
+where rownum<=5
