@@ -103,7 +103,7 @@ order by num asc
 where rownum<=20
 
 
-9. How does holiday affect pickups?
+***9. How does holiday affect pickups?
 
 select t1.n1-t2.n2
 from
@@ -117,7 +117,7 @@ where h.Day is NULL) t2
 
 
 
-10. What is the holiday on which people are most likely to travel by Uber?
+***10. What is the holiday on which people are most likely to travel by Uber?
 
 select h.Holiday_Type, count(t.pickup_datetime) as num
 from holiday h right join trip t
