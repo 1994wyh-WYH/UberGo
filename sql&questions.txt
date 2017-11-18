@@ -42,18 +42,17 @@ order by count desc)
 where rownum=1
 
 
-***5. Difference between holiday pickups and non-holiday pickups
+5. What is the total difference between number of holiday pickups and non-holiday pickups?
 
-select t1.h1-t2.h2
-from 
-(select (count(*)) as h1
+select (t1.n1)-(t2.n2) as totaldifference
+from
+(select count(*) as n1
 from holiday h inner join trip t
-where h.holiday=1
-group by DATEPART(day, t.pickup_datetime) ) t1, 
-(select (count(*)) as h2
-from holiday h inner join trip t
-where h.holiday=0
-group by DATEPART(day, t.pickup_datetime) ) t2
+on to_timestamp(h.HOLIDAY_DATE)=(t.pickup_datetime)) t1,
+(select count(*) as n2
+from holiday h right join trip t
+on to_timestamp(h.holiday_date)=(t.pickup_datetime)
+where h.holiday_date is NULL) t2
 
 
 6. Whether is it likely to be busy when it rains or snows?
@@ -103,27 +102,32 @@ order by num asc
 where rownum<=20
 
 
-***9. How does holiday affect pickups?
+9. How does holiday affect pickups (what’s the average pickup difference between a holiday and a normal day)?
 
-select t1.n1-t2.n2
+select (t1.n1/t1.hday)-(t2.n2/t2.nonHday) as avgDifferencePerDay
 from
-(select count(*) n1
+(select count(distinct h.holiday_date) as hday, count(*) as n1
 from holiday h inner join trip t
-on h.Date=t.pickup_datetime) t1,
-(select count(*) n2
+on to_timestamp(h.HOLIDAY_DATE)=(t.pickup_datetime)) t1,
+(select count(distinct t.pickup_datetime) as nonHday, count(*) as n2
 from holiday h right join trip t
-on h.Day=t.pickup_datetime
-where h.Day is NULL) t2
+on to_timestamp(h.holiday_date)=(t.pickup_datetime)
+where h.holiday_date is NULL) t2
 
 
 
-***10. What is the holiday on which people are most likely to travel by Uber?
+10. What are the top 5 holidays on which people are most likely to travel by Uber?
 
+select * 
+from
+(
 select h.Holiday_Type, count(t.pickup_datetime) as num
-from holiday h right join trip t
-on h.Date=t.pickup_datetime
-where rownum=1
-group by t.pickup_datetime
+from holiday h inner join trip t
+on to_timestamp(h.holiday_Date)=t.pickup_datetime
+group by h.Holiday_Type
+order by num desc
+)
+where rownum<=3
 
 
 11. Given a specific weather, where is it most likely to be busy?
