@@ -48,11 +48,11 @@ select (t1.n1)-(t2.n2) as totaldifference
 from
 (select count(*) as n1
 from holiday h inner join trip t
-on to_timestamp(h.HOLIDAY_DATE)=(t.pickup_datetime)) t1,
+on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')) t1,
 (select count(*) as n2
 from holiday h right join trip t
-on to_timestamp(h.holiday_date)=(t.pickup_datetime)
-where h.holiday_date is NULL) t2
+on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')
+where h.holiday_date is NULL) t2;
 
 
 6. Whether is it likely to be busy when it rains or snows?
@@ -61,15 +61,15 @@ select ts.csnow, tr.crain
 from (
 select count(*) as csnow
 from weather w inner join trip t
-on w.time_stamp=t.pickup_datetime
+on to_char(w.time_stamp, 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') AND EXTRACT(hour from w.time_stamp) = EXTRACT(hour from t.pickup_datetime)
 where w.snow=1
 ) ts,
 (
 select count(*) as crain
 from weather w inner join trip t
-on w.time_stamp=t.pickup_datetime
+on to_char(w.time_stamp, 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') AND EXTRACT(hour from w.time_stamp) = EXTRACT(hour from t.pickup_datetime)
 where w.rain=1
-) tr
+) tr;
 
 
 7. Which kind of weather will cause the most increase in passenger number?
@@ -143,3 +143,11 @@ group by t.pickup_longitude, t.pickup_latitude
 order by num desc
 )
 where rownum<=5
+
+12. Pickups on each holiday
+select t1.holiday_name, count (*) as num
+from (select *
+from holiday h inner join trip t
+on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')) t1
+group by t1.holiday_name
+order by num desc;
