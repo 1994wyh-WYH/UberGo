@@ -5,10 +5,10 @@ var path = require('path');
 // Connect string to MySQL
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'fling.seas.upenn.edu',
-  user     : 'chuqihe',
-  password : 'He19940408$',
-  database : 'chuqihe'
+  host     : 'cis550.cxzyd6qo9cfb.us-east-1.rds.amazonaws.com',
+  user     : 'admin',
+  password : '550UberGo',
+  database : 'cis550'
 });
 
 /* GET home page. */
