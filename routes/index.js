@@ -41,7 +41,7 @@ router.post('/insert', function(req, res, next) {
 router.get('/data/:email', function(req,res) {
   // use console.log() as print() in case you want to debug, example below:
   // console.log("inside person email");
-  var query = 'SELECT Person.login, name, sex, relationshipStatus, birthyear, sum(case when Friends.login is null then 0 else 1 end) AS numFriends FROM Person LEFT JOIN Friends ON Person.login = Friends.login GROUP BY Person.login, Person.name, Person.sex, Person.relationshipStatus, Person.birthyear';
+  var query = 'SELECT* FROM HOLIDAY';
   // you may change the query during implementation
   var email = req.params.email;
   if (email != 'undefined') query = query + ' having login ="' + email + '"' ;

@@ -31,19 +31,17 @@
         </p>
         <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
             <tr> 
-            <td> Login </td>
-            <td> Name </td>
-            <td> Sex </td>
-            <td> RelationshipStatus </td>
-            <td> Birthyear </td>
-            <td> Number of Friends </td>
+            <td> id </td>
+            <td> date </td>
+            <td> weekday </td>
+            <td> name </td>
+            <td> type </td>
             <tr ng-repeat="x in data"> 
-            <td> {{x.login}} </td>
-            <td> {{x.name}} </td>
-            <td> {{x.sex}} </td>
-            <td> {{x.relationshipStatus}} </td>
-            <td> {{x.birthyear}} </td>
-            <td> {{x.numFriends}}</td>
+            <td> {{x.holiday_id}} </td>
+            <td> {{x.holiday_date}} </td>
+            <td> {{x.weekday} </td>
+            <td> {{x.holiday_name}} </td>
+            <td> {{x.holiday_type}} </td>
             </tr>
         </table>
         </div>
