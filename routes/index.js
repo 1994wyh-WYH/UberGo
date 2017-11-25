@@ -6,9 +6,9 @@ var path = require('path');
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'fling.seas.upenn.edu',
-  user     : 'chuqihe',
-  password : 'He19940408$',
-  database : 'chuqihe'
+  user     : '',
+  password : '',
+  database : ''
 });
 
 /* GET home page. */
