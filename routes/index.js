@@ -3,13 +3,13 @@ var router = express.Router();
 var path = require('path');
 
 // Connect string to MySQL
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-  host     : 'cis550.cxzyd6qo9cfb.us-east-1.rds.amazonaws.com',
-  user     : 'admin',
+var oracledb  = require('oracledb');
+
+var connAttrs = {
+  user     : "admin",
   password : '550UberGo',
-  database : 'cis550'
-});
+  connectString: "//cis550.cxzyd6qo9cfb.us-east-1.rds.amazonaws.com:1521/orcl"
+};
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -46,12 +46,28 @@ router.get('/data/:email', function(req,res) {
   var email = req.params.email;
   if (email != 'undefined') query = query + ' having login ="' + email + '"' ;
   console.log(query);
-  connection.query(query, function(err, rows, fields) {
+  oracledb.getConnection(connAttrs, function (err, connection) {
+        if (err) {
+            console.error(err); return;
+        }
+        
+
+  connection.execute(query,
+      function(err, result)
+      {
+        if (err) { console.error(err); return; }
+        console.log(result.rows);
+        res.json(result.rows);
+      });
+
+  /*connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
         res.json(rows);
     }  
-    });
+    });*/
+  });
+  
 });
 
 // ----Your implemention of route handler for "Insert a new record" should go here-----
