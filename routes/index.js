@@ -49,6 +49,7 @@ router.get('/data/:email', function(req,res) {
   connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
+        console.log(rows);
         res.json(rows);
     }  
     });
