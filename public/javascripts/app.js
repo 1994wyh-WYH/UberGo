@@ -3,9 +3,8 @@ app.controller('myController', function($scope, $http) {
         $scope.message="";
         $scope.Submit = function() {
         var email = !!$scope.email ? $scope.email : undefined;
-        var request = $http.get('/data/'+email);
-        console.log('after requts' + request);
-        request.success(function(data) {
+        var request = $http.get('/data/'+ email);
+        request.success(function(da ta) {
             $scope.data = data;
         });
         request.error(function(data){

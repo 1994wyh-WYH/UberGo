@@ -41,7 +41,7 @@ router.post('/insert', function(req, res, next) {
 router.get('/data/:email', function(req,res) {
   // use console.log() as print() in case you want to debug, example below:
   // console.log("inside person email");
-  var query = 'SELECT* FROM HOLIDAY';
+  var query = 'SELECT* FROM HOLIDAY Where Holiday_id < 30';
   // you may change the query during implementation
   var email = req.params.email;
   if (email != 'undefined') query = query + ' having login ="' + email + '"' ;
@@ -52,8 +52,9 @@ router.get('/data/:email', function(req,res) {
         }
         
 
-  connection.execute(query,
-      function(err, result)
+  connection.execute(query,{},
+      { outFormat: oracledb.OBJECT // Return the result as Object
+        },function(err, result)
       {
         if(err) { console.error(err); return; }
         else{
@@ -63,7 +64,14 @@ router.get('/data/:email', function(req,res) {
         }
         
       });
-
+connection.release(
+                function (err) {
+                    if (err) {
+                        console.error(err.message);
+                    } else {
+                        console.log("GET /user_profiles : Connection released");
+                    }
+                });
 
   /*connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);

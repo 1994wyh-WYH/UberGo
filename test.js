@@ -9,8 +9,9 @@ var query = 'SELECT* FROM HOLIDAY';
 oracledb.getConnection(connAttrs, function (err, connection){
     if (err) { console.error(err); return; }
     connection.execute(
-      query,
-      function(err, result)
+      query,{},
+      { outFormat: oracledb.OBJECT // Return the result as Object
+        }, function(err, result)
       {
         if (err) { console.error(err); return; }
         console.log(result.rows);
