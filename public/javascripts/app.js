@@ -4,6 +4,7 @@ app.controller('myController', function($scope, $http) {
         $scope.Submit = function() {
         var email = !!$scope.email ? $scope.email : undefined;
         var request = $http.get('/data/'+email);
+        console.log('after requts' + request);
         request.success(function(data) {
             $scope.data = data;
         });

@@ -55,13 +55,15 @@ router.get('/data/:email', function(req,res) {
   connection.execute(query,
       function(err, result)
       {
-        if (err) { console.error(err); return; }
+        if(err) { console.error(err); return; }
         else{
           console.log(result.rows);
-           res.json(result.rows);
+          res.json(result.rows);
+
         }
         
       });
+
 
   /*connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
@@ -70,6 +72,8 @@ router.get('/data/:email', function(req,res) {
     }  
     });*/
   });
+
+
   
 });
 
