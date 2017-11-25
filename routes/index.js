@@ -56,8 +56,11 @@ router.get('/data/:email', function(req,res) {
       function(err, result)
       {
         if (err) { console.error(err); return; }
-        console.log(result.rows);
-        res.json(result.rows);
+        else{
+          console.log(result.rows);
+           res.json(result.rows);
+        }
+        
       });
 
   /*connection.query(query, function(err, rows, fields) {
