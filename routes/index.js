@@ -52,7 +52,9 @@ router.get('/data/:email', function(req,res) {
         }
         
 
-  connection.execute(query,
+  connection.execute(query,{},
+      { outFormat: oracledb.OBJECT // Return the result as Object
+        },
       function(err, result)
       {
         if(err) { console.error(err); return; }
