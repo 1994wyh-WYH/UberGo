@@ -78,7 +78,7 @@ select tt.condition1, tt.countTotal, tt2.cday, tt.countTotal/tt2.cday as frequen
 from(
 select distinct w.condition as condition1, count(*) as countTotal
 from weather w inner join trip t
-on w.time_stamp=t.pickup_datetime
+on extract(day from w.time_stamp)=extract(day from t.pickup_datetime) and extract(hour from w.time_stamp)=extract(hour from t.pickup_datetime)
 group by w.condition
 ) tt inner join 
 (select w.condition as condition2, count(w.condition) as cday
@@ -137,7 +137,7 @@ from
 (
 select t.pickup_longitude, t.pickup_latitude, count(*) as num
 from weather w inner join trip t
-on w.time_stamp=t.pickup_datetime
+on extract(day from w.time_stamp)=extract(day from t.pickup_datetime) and extract(hour from w.time_stamp)=extract(hour from t.pickup_datetime) 
 where w.condition='Clear'
 group by t.pickup_longitude, t.pickup_latitude
 order by num desc
