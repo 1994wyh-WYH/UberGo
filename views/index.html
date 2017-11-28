@@ -25,8 +25,9 @@
             <!-- Main component for a primary marketing message or call to action-->
             <div class="jumbotron">
          <div ng-controller="myController">
-        <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter a person login:
-            <input name="hour" ng-model="hour" value="">
+        <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter time you are interested in:<br/>
+            Month <input name="month" ng-model="month" value=""><br/><br/>
+            Hour  <input name="hour" ng-model="hour" value=""><br/><br/>
             <button type="button" ng-click="Submit()" class="button">UberGo!</button>
         </p>
         <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
