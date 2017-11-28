@@ -43,22 +43,47 @@ router.get('/data/:year/:month/:day/:hour/:weekday', function(req,res) {
   // console.log("inside person email");
   var query = 'select * ' +
    'from (select t.pickup_longitude, t.pickup_latitude, count (*) as num from trip t ';
-  var hourquery = 'EXTRACT(hour from t.pickup_datetime) = ';
+  var yearquery = 'EXTRACT(year from t.pickup_datetime) = ';
   var monthquery = 'EXTRACT(month from t.pickup_datetime) = ';
-  var yearquery
-   var groupBy = ' group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10';
+  var dayquery = 'EXTRACT(day from t.pickup_datetime) = ';
+  var hourquery = 'EXTRACT(hour from t.pickup_datetime) = ';
+  var weekdayquery = 'TO_CHAR(t.pickup_datetime, \'D\') = ';
+   
+  var groupBy = ' group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10';
   // you may change the query during implementation
   var year = req.params.year;
   var month = req.params.month;
   var day = req.params.day;
   var hour = req.params.hour;
   var weekday = req.params.weekday;
-  
   console.log("year " + year + "month " + month+"day " + day +"hour " + hour+ "weekday " + weekday);
-  /*if (hour != 'undefined' && month != 'undefined'){
-    query = query + 'where '+ hourquery + hour + ' and '+ monthquery + month + groupBy;
+  var where = '';
+  if (year != 'undefined'){
+     where = addWhere(where, yearquery, year); 
   }
-  else*/ query = query + groupBy;
+  if (month != 'undefined'){
+    where = addWhere(where, monthquery, month); 
+  }
+  if (day != 'undefined'){
+    where = addWhere(where, dayquery, day); 
+  }
+  if (hour != 'undefined'){
+    where = addWhere(where, hourquery, hour); 
+  }
+  if (weekday != 'undefined'){
+    where = addWhere(where, weekdayquery, weekday); 
+  }
+
+  function addWhere(where, query, number){
+    if(where == ''){
+      where += 'where ' + query + number;
+    }else{
+      where = where +' and ' + query + number;
+    }
+    console.log("where " + where);
+    return where;
+  }
+  query = query + where + groupBy;
   console.log(query);
   oracledb.getConnection(connAttrs, function (err, connection) {
         if (err) {
