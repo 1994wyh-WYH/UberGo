@@ -41,10 +41,13 @@ router.post('/insert', function(req, res, next) {
 router.get('/data/:email', function(req,res) {
   // use console.log() as print() in case you want to debug, example below:
   // console.log("inside person email");
-  var query = 'SELECT* FROM HOLIDAY';
+  var query1 = 'select * ' +
+   'from (select t.pickup_longitude, t.pickup_latitude, count (*) as num '+
+   'from trip t where EXTRACT(hour from t.pickup_datetime) = ';
+   var query2 = ' group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10';
   // you may change the query during implementation
   var email = req.params.email;
-  if (email != 'undefined') query = query + ' having login ="' + email + '"' ;
+  if (email != 'undefined') var query = query1 + email + query2;
   console.log(query);
   oracledb.getConnection(connAttrs, function (err, connection) {
         if (err) {

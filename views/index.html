@@ -31,17 +31,11 @@
         </p>
         <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
             <tr> 
-            <td> id </td>
-            <td> date </td>
-            <td> weekday </td>
-            <td> name </td>
-            <td> type </td>
+            <td>Longitude </td>
+            <td> Latitude </td>
             <tr ng-repeat="x in data"> 
-            <td> {{x.HOLIDAY_ID}} </td>
-            <td> {{x.HOLIDAY_DATE}} </td>
-            <td> {{x.WEEKDAY}} </td>
-            <td> {{x.HOLIDAY_NAME}} </td>
-            <td> {{x.HOLIDAY_TYPE}} </td>
+            <td> {{x.PICKUP_LONGITUDE}} </td>
+            <td> {{x.PICKUP_LATITUDE}} </td>
             </tr>
         </table>
         </div>
