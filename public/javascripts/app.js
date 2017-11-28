@@ -2,8 +2,12 @@ var app = angular.module('angularjsNodejsTutorial',[]);
 app.controller('myController', function($scope, $http) {
         $scope.message="";
         $scope.Submit = function() {
+        var year = !!$scope.year ? $scope.year : undefined;
+        var month = !!$scope.month ? $scope.month : undefined;
+        var day = !!$scope.day ? $scope.day : undefined;
         var hour = !!$scope.hour ? $scope.hour : undefined;
-        var request = $http.get('/data/'+hour);
+        var weekday = !!$scope.weekday ? $scope.weekday : undefined;
+        var request = $http.get('/data/'+year+'/'+month+'/'+day+'/'+hour+'/'+weekday);
         request.success(function(data) {
             $scope.data = data;
         });

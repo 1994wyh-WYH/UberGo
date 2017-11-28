@@ -26,17 +26,31 @@
             <div class="jumbotron">
          <div ng-controller="myController">
         <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter time you are interested in:<br/>
+            Year <input name="year" ng-model="year" value=""><br/><br/>
             Month <input name="month" ng-model="month" value=""><br/><br/>
+            Day  <input name="day" ng-model="day" value=""><br/><br/>
             Hour  <input name="hour" ng-model="hour" value=""><br/><br/>
+            Weekday <select name="weekday" ng-model="weekday">
+                <option value="">None</option>
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+                <option value="7">Sunday</option>
+            </select><br/><br/>
             <button type="button" ng-click="Submit()" class="button">UberGo!</button>
         </p>
         <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
             <tr> 
-            <td>Longitude </td>
+            <td> Longitude </td>
             <td> Latitude </td>
+            <td> Pickups </td>
             <tr ng-repeat="x in data"> 
             <td> {{x.PICKUP_LONGITUDE}} </td>
             <td> {{x.PICKUP_LATITUDE}} </td>
+            <td> {{x.NUM}} </td>
             </tr>
         </table>
         </div>

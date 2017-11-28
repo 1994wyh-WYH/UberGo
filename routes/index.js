@@ -38,19 +38,27 @@ router.post('/insert', function(req, res, next) {
     });
 });
 
-router.get('/data/:hour', function(req,res) {
+router.get('/data/:year/:month/:day/:hour/:weekday', function(req,res) {
   // use console.log() as print() in case you want to debug, example below:
   // console.log("inside person email");
   var query = 'select * ' +
    'from (select t.pickup_longitude, t.pickup_latitude, count (*) as num from trip t ';
-  var where = 'where EXTRACT(hour from t.pickup_datetime) = ';
-
-   var groupBy = 'group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10';
+  var hourquery = 'EXTRACT(hour from t.pickup_datetime) = ';
+  var monthquery = 'EXTRACT(month from t.pickup_datetime) = ';
+  var yearquery
+   var groupBy = ' group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10';
   // you may change the query during implementation
+  var year = req.params.year;
+  var month = req.params.month;
+  var day = req.params.day;
   var hour = req.params.hour;
-  console.log("hour" + hour);
-  if (hour != 'undefined') query = query + where + hour + groupBy;
-  else query = query + groupBy;
+  var weekday = req.params.weekday;
+  
+  console.log("year " + year + "month " + month+"day " + day +"hour " + hour+ "weekday " + weekday);
+  /*if (hour != 'undefined' && month != 'undefined'){
+    query = query + 'where '+ hourquery + hour + ' and '+ monthquery + month + groupBy;
+  }
+  else*/ query = query + groupBy;
   console.log(query);
   oracledb.getConnection(connAttrs, function (err, connection) {
         if (err) {
