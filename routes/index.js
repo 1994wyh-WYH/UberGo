@@ -41,14 +41,16 @@ router.post('/insert', function(req, res, next) {
 router.get('/data/:hour', function(req,res) {
   // use console.log() as print() in case you want to debug, example below:
   // console.log("inside person email");
-  var query1 = 'select * ' +
-   'from (select t.pickup_longitude, t.pickup_latitude, count (*) as num '+
-   'from trip t where EXTRACT(hour from t.pickup_datetime) = ';
-   var query2 = ' group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10';
+  var query = 'select * ' +
+   'from (select t.pickup_longitude, t.pickup_latitude, count (*) as num from trip t ';
+  var where = 'where EXTRACT(hour from t.pickup_datetime) = ';
+
+   var groupBy = 'group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10';
   // you may change the query during implementation
   var hour = req.params.hour;
   console.log("hour" + hour);
-  if (hour != 'undefined') var query = query1 + hour + query2;
+  if (hour != 'undefined') query = query + where + hour + groupBy;
+  else query = query + groupBy;
   console.log(query);
   oracledb.getConnection(connAttrs, function (err, connection) {
         if (err) {
