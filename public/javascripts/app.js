@@ -2,9 +2,8 @@ var app = angular.module('angularjsNodejsTutorial',[]);
 app.controller('myController', function($scope, $http) {
         $scope.message="";
         $scope.Submit = function() {
-        var email = !!$scope.email ? $scope.email : undefined;
-        var request = $http.get('/data/'+email);
-        console.log('after requts' + request);
+        var hour = !!$scope.hour ? $scope.hour : undefined;
+        var request = $http.get('/data/'+hour);
         request.success(function(data) {
             $scope.data = data;
         });
