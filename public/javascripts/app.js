@@ -7,7 +7,10 @@ app.controller('myController', function($scope, $http) {
         var day = !!$scope.day ? $scope.day : undefined;
         var hour = !!$scope.hour ? $scope.hour : undefined;
         var weekday = !!$scope.weekday ? $scope.weekday : undefined;
-        var request = $http.get('/data/'+year+'/'+month+'/'+day+'/'+hour+'/'+weekday);
+        var fog = !!$scope.fog ? $scope.fog : undefined;
+        var rain = !!$scope.rain ? $scope.rain : undefined;
+        var snow = !!$scope.snow ? $scope.snow : undefined;
+        var request = $http.get('/data/'+year+'/'+month+'/'+day+'/'+hour+'/'+weekday+'/'+fog+'/'+rain+'/'+snow);
         request.success(function(data) {
             $scope.data = data;
         });

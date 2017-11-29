@@ -13,9 +13,9 @@
         <!-- Static navbar-->
         <nav role="navigation" class="navbar navbar-static-top navbar-default">
             <div class="container">
-                <div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">HW2 - CIS550</a></div>
+                <div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">UberGo</a></div>
                 <div id="navbar" class="collapse navbar-collapse">
-                    <li class="active"><a href="/">Your Work</a></li>
+                    <li class="active"><a href="/">SearchPage</a></li>
                     <li><a href="/insert">Insert a new record</a></li>
                     <li><a href="/reference">Reference</a></li>
                 </div>
@@ -40,7 +40,15 @@
                 <option value="6">Saturday</option>
                 <option value="7">Sunday</option>
             </select><br/><br/>
+            General Weather<br><br> 
+            <input type="checkbox" name="fog" ng-model="fog" ng-true-value="'1'" 
+            ng-false-value=""> fog<br>
+            <input type="checkbox" name="rain" ng-model="rain" ng-true-value="'1'" 
+            ng-false-value=""> rain <br>
+            <input type="checkbox" name="snow" ng-model="snow" ng-true-value="'1'" 
+            ng-false-value=""> snow <br>
             <button type="button" ng-click="Submit()" class="button">UberGo!</button>
+
         </p>
         <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
             <tr> 
