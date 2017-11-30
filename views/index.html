@@ -18,6 +18,8 @@
                     <li class="active"><a href="/">Your Work</a></li>
                     <li><a href="/insert">Insert a new record</a></li>
                     <li><a href="/reference">Reference</a></li>
+                    <li><a href="/report">Report</a></li>
+
                 </div>
             </div>
         </nav>
@@ -27,6 +29,7 @@
          <div ng-controller="myController">
         <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter a person login:
             <input name="email" ng-model="email" value="">
+           
             <button type="button" ng-click="Submit()" class="button">Show Persons</button>
         </p>
         <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
