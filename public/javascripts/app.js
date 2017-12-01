@@ -43,7 +43,7 @@ app.controller('myController', function($scope, $http) {
                 locations.push({
                     latlon: new google.maps.LatLng(user.PICKUP_LATITUDE, user.PICKUP_LONGITUDE),
                     message: new google.maps.InfoWindow({
-                        content: user.NUM,
+                        content: "rank " + (i + 1) + " counts " + user.NUM,
                         maxWidth: 320
                     }),
                     username: 'name',
@@ -72,7 +72,7 @@ var initialize = function(latitude, longitude) {
 
        
     }
-
+    var bounds = new google.maps.LatLngBounds();
     // Loop through each location in the array and place a marker
     locations.forEach(function(n, i){
         var marker = new google.maps.Marker({
@@ -81,6 +81,7 @@ var initialize = function(latitude, longitude) {
             title: "Big Map",
             icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
         });
+        bounds.extend(marker.position);
 
         // For each marker created, add a listener that checks for clicks
         google.maps.event.addListener(marker, 'click', function(e){
@@ -90,6 +91,7 @@ var initialize = function(latitude, longitude) {
             n.message.open(map, marker);
         });
     });
+    map.fitBounds(bounds);
 
 };
 
