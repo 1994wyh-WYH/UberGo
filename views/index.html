@@ -12,7 +12,7 @@
         <style>
         #map {
         height: 500px;
-        width: 800px;
+        width: 1000px;
       }
     </style>
     </head>
@@ -33,11 +33,9 @@
             <!-- Main component for a primary marketing message or call to action-->
             <div class="jumbotron">
          <div ng-controller="myController">
-        <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter time you are interested in:<br/>
-            Year <input name="year" ng-model="year" value=""><br/><br/>
-            Month <input name="month" ng-model="month" value=""><br/><br/>
-            Day  <input name="day" ng-model="day" value=""><br/><br/>
-            Hour  <input name="hour" ng-model="hour" value=""><br/><br/>
+        <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter factors you are interested in:<br/>
+            Year <input name="year" ng-model="year" value="">   Month <input name="month" ng-model="month" value=""><br/><br/>
+            Day  <input name="day" ng-model="day" value=""> Hour &nbsp;  <input name="hour" ng-model="hour" value=""><br/><br/>
             Weekday <select name="weekday" ng-model="weekday">
                 <option value="">None</option>
                 <option value="1">Monday</option>
@@ -48,16 +46,17 @@
                 <option value="6">Saturday</option>
                 <option value="7">Sunday</option>
             </select><br/><br/>
-            General Weather<br><br> 
+           
             <input type="checkbox" name="fog" ng-model="fog" ng-true-value="'1'" 
-            ng-false-value=""> fog<br>
+            ng-false-value=""> fog 
             <input type="checkbox" name="rain" ng-model="rain" ng-true-value="'1'" 
-            ng-false-value=""> rain <br>
+            ng-false-value=""> rain  
             <input type="checkbox" name="snow" ng-model="snow" ng-true-value="'1'" 
-            ng-false-value=""> snow <br>
+            ng-false-value=""> snow <br/><br/>
             <button type="button" ng-click="Submit()" class="button">UberGo!</button>
 
         </p>
+        <!-- Custom styles for this template
         <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
             <tr> 
             <td> Longitude </td>
@@ -68,12 +67,29 @@
             <td> {{x.PICKUP_LATITUDE}} </td>
             <td> {{x.NUM}} </td>
             </tr>
-        </table>
+        </table>-->
 
-            <br/><br/>
+            <br/>
          
-            <div id="map"></div>
-            
+            <center><div id="map"></div></center>
+            <script>
+      function initMap() {
+        // Create a map object and specify the DOM element for display.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 40, lng: -70},
+          zoom: 8
+        });
+        var bounds = new google.maps.LatLngBounds();
+        var b1 = new google.maps.LatLng(40.7, -73.600);
+        var b2 = new google.maps.LatLng(41.0, -73.599);
+        bounds.extend(b1);
+        bounds.extend(b2);
+        map.fitBounds(bounds);
+      }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCYFIVTyig8TRGy7FaxeJyUXuJ3ftkcP0&callback=initMap"
+    async defer></script>
         </div>
     </body>
 
