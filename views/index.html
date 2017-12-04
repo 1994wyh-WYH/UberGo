@@ -17,6 +17,34 @@
     </style>
     </head>
     <body data-spy="scroll" data-target=".scrollspy">
+	<script>
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId      : '130397237610364',
+	      xfbml      : true,
+	      version    : 'v2.11'
+	    });
+	  
+	    FB.AppEvents.logPageView();
+	  
+	  };
+
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "https://connect.facebook.net/en_US/sdk.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+	</script>
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.11&appId=130397237610364';
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
         <header></header>
         <!-- Static navbar-->
         <nav role="navigation" class="navbar navbar-static-top navbar-default">
@@ -32,6 +60,7 @@
          <div class="container">
             <!-- Main component for a primary marketing message or call to action-->
             <div class="jumbotron">
+	<div class="fb-login-button" data-width="100" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
          <div ng-controller="myController">
         <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter factors you are interested in:<br/>
             Year <input name="year" ng-model="year" value="">   Month <input name="month" ng-model="month" value=""><br/><br/>
@@ -54,6 +83,7 @@
             <input type="checkbox" name="snow" ng-model="snow" ng-true-value="'1'" 
             ng-false-value=""> snow <br/><br/>
             <button type="button" ng-click="Submit()" class="button">UberGo!</button>
+
 
         </p>
         <!-- Custom styles for this template
