@@ -36,13 +36,13 @@ router.get('/data/:queryNumber', function(req,res, next) {
   //var query1 = "select * from (select t.pickup_longitude, t.pickup_latitude, count(*) as num from trip t group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10";
   
   //query3: busy time in day
-  var query3 = "select * from (select EXTRACT(hour from t.pickup_datetime), count (*) as num from trip t group by EXTRACT(hour from t.pickup_datetime) order by num desc) where rownum=1";
+  var query3 = "select * from (select EXTRACT(hour from t.pickup_datetime) as time, count (*) as num0 from trip t group by EXTRACT(hour from t.pickup_datetime) order by num0 desc) where rownum=1";
   
   // query 4: busy weekday
-  var query4 = "select * from (select TO_CHAR(t.pickup_datetime,'D'), count (TO_CHAR(t.pickup_datetime,'D')) as count from trip t group by TO_CHAR(t.pickup_datetime,'D') order by count desc) where rownum=1"; 
+  var query4 = "select * from (select TO_CHAR(t.pickup_datetime,'D') as week_day, count (TO_CHAR(t.pickup_datetime,'D')) as count from trip t group by TO_CHAR(t.pickup_datetime,'D') order by count desc) where rownum=1"; 
   
   // query 5: total difference between number of holiday pickups and non-holiday pickups?
-  var query5 = "select (t1.n1)-(t2.n2) as totaldifference from (select count(*) as n1 from holiday h inner join trip t on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')) t1, (select count(*) as n2 from holiday h right join trip t on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') where h.holiday_date is NULL) t2";
+  var query5 = "select (t1.n1)-(t2.n2) as totaldif from (select count(*) as n1 from holiday h inner join trip t on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')) t1, (select count(*) as n2 from holiday h right join trip t on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') where h.holiday_date is NULL) t2";
   // query6: Whether is it likely to be busy when it rains or snows?
   var query6 = "select ts.csnow, tr.crain from ( select count(*) as csnow from weather w inner join trip t on to_char(w.time_stamp, 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') AND EXTRACT(hour from w.time_stamp) = EXTRACT(hour from t.pickup_datetime) where w.snow=1 ) ts, ( select count(*) as crain from weather w inner join trip t on to_char(w.time_stamp, 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') AND EXTRACT(hour from w.time_stamp) = EXTRACT(hour from t.pickup_datetime) where w.rain=1 ) tr";
   
@@ -53,12 +53,12 @@ router.get('/data/:queryNumber', function(req,res, next) {
   var query9 = "select (t1.n1/t1.hday)-(t2.n2/t2.nonHday) as avgDifferencePerDay from (select count(distinct h.holiday_date) as hday, count(*) as n1 from holiday h inner join trip t on to_timestamp(h.HOLIDAY_DATE)=(t.pickup_datetime)) t1, (select count(distinct t.pickup_datetime) as nonHday, count(*) as n2 from holiday h right join trip t on to_timestamp(h.holiday_date)=(t.pickup_datetime) where h.holiday_date is NULL) t2";
 
   //query 10: What are the top 5 holidays on which people are most likely to travel by Uber?
-  var query10 = "select * from (select h.Holiday_name, count(t.pickup_datetime) as num from holiday h inner join trip t on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') group by h.Holiday_name order by num desc) where rownum<=5";
+  var query10 = "select * from (select h.Holiday_name, count(t.pickup_datetime) as num6 from holiday h inner join trip t on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') group by h.Holiday_name order by num6 desc) where rownum<=5";
 
   //query11: Given a specific weather, where is it most likely to be busy?
   //var query11 = "select * from ( select t.pickup_longitude, t.pickup_latitude, count(*) as num from weather w inner join trip t on extract(day from w.time_stamp)=extract(day from t.pickup_datetime) and extract(hour from w.time_stamp)=extract(hour from t.pickup_datetime) where w.condition='Clear' group by t.pickup_longitude, t.pickup_latitude order by num desc ) where rownum<=5";
   //query12: Pickups on each holiday
-  var query12 = "select t1.holiday_name, count (*) as num from (select * from holiday h inner join trip t on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')) t1 group by t1.holiday_name order by num desc"; 
+  var query12 = "select t1.holiday_name as holiday_name7, count (*) as num7 from (select * from holiday h inner join trip t on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')) t1 group by t1.holiday_name order by num7 desc"; 
 
   var queries = [query3, query4 ,query5, query6, query7, query9, query10, query12];
   //console.log(queries[queryNumber]);
