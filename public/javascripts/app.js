@@ -1,4 +1,22 @@
 var app = angular.module('angularjsNodejsTutorial',[]);
+
+app.controller('reportController', function($scope, $http) {
+        $scope.message="";
+        $scope.submit = function() {
+        var queryNumber = $scope.queryNumber;   
+        var request = $http.get('/data/' + queryNumber);
+        console.log('after requts' + request);
+        console.log(request);
+        request.success(function(data) {
+            $scope.data = data;
+          //  console.log("data here " + data);
+        });
+        request.error(function(data){
+            console.log('err');
+        });
+    }; 
+});
+
 app.controller('myController', function($scope, $http) {
         $scope.message="";
 	$scope.SubmitM = function(){
