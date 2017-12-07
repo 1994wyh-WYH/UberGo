@@ -43,6 +43,10 @@ router.get('/insert', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
 });
 
+router.get('/report', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '../', 'views', 'report.html'));
+});
+
 router.get('/data/:queryNumber', function(req,res, next) {
   var  queryNumber = req.params.queryNumber;
   console.log("the query number is" + queryNumber);

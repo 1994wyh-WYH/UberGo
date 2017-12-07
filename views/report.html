@@ -21,7 +21,7 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <li class="active"><a href="/">Search Page</a></li>
                     <li><a href="/insert">Insert a new record</a></li>
-                    <li><a href="/reference">Reference</a></li>
+                    
                 </div>
             </div>
         </nav>
@@ -52,8 +52,8 @@
                     <h2 > Q1:Most busy time everyday?</h2>
                     <table border="0" cellpadding="10" cellspacing="1" width="800" align="center"> 
                         <tr>
-                            <td > Hour </td>
-                            <td > Pickup Numbers </td> 
+                            <td > <strong>Hour</strong> </td>
+                            <td > <strong>Pickup Numbers</strong> </td> 
                         </tr>
                         <tr ng-repeat="x in data"> 
                             <td> {{x.TIME}}</td>   
@@ -66,7 +66,7 @@
                     <h2> Q2: Busiest weekday: </h2>
                     <table border="0" cellpadding="10" cellspacing="1" width="800" align="center">
                         <tr>
-                            <td> Weekday </td>
+                            <td> strongWeekday </td>
                             <td> Pickup Numbers </td>
                         </tr>     
                         
