@@ -1,0 +1,152 @@
+1. top 10 places to wait given a specific time(represented by ”givenHour” and “givenDay”)
+
+select * 
+from 
+(select t.pickup_longitude, t.pickup_latitude, count (*) as num
+from trip t
+where EXTRACT(hour from t.pickup_datetime) = givenHour and EXTRACT(day from t.pickup_datetime) = givenDay 
+group by t.pickup_longitude, t.pickup_latitude
+order by num desc) 
+where rownum<=10
+
+2. top 10 places to wait in general
+
+select *
+from
+(select t.pickup_longitude, t.pickup_latitude, count (*) as num
+from trip t
+group by t.pickup_longitude, t.pickup_latitude
+order by num desc)
+where rownum<=10
+
+	
+3. What time in a day has most pickups?
+
+select *
+from
+(select EXTRACT(hour from t.pickup_datetime), count (*) as num
+from trip t
+group by EXTRACT(hour from t.pickup_datetime)
+order by num desc)
+where rownum=1
+
+
+4. What day of a week has most pickups?
+
+select *
+from(
+select TO_CHAR(t.pickup_datetime,'D'), count (TO_CHAR(t.pickup_datetime,'D')) as count
+from trip t
+group by TO_CHAR(t.pickup_datetime,'D')
+order by count desc)
+where rownum=1
+
+
+5. What is the total difference between number of holiday pickups and non-holiday pickups?
+
+select (t1.n1)-(t2.n2) as totaldifference
+from
+(select count(*) as n1
+from holiday h inner join trip t
+on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')) t1,
+(select count(*) as n2
+from holiday h right join trip t
+on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')
+where h.holiday_date is NULL) t2;
+
+
+6. Whether is it likely to be busy when it rains or snows?
+
+select ts.csnow, tr.crain
+from (
+select count(*) as csnow
+from weather w inner join trip t
+on to_char(w.time_stamp, 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') AND EXTRACT(hour from w.time_stamp) = EXTRACT(hour from t.pickup_datetime)
+where w.snow=1
+) ts,
+(
+select count(*) as crain
+from weather w inner join trip t
+on to_char(w.time_stamp, 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY') AND EXTRACT(hour from w.time_stamp) = EXTRACT(hour from t.pickup_datetime)
+where w.rain=1
+) tr;
+
+
+7. Which kind of weather will cause the most increase in passenger number?
+
+select tt.condition1, tt.countTotal, tt2.cday, tt.countTotal/tt2.cday as frequency
+from(
+select distinct w.condition as condition1, count(*) as countTotal
+from weather w inner join trip t
+on extract(day from w.time_stamp)=extract(day from t.pickup_datetime) and extract(hour from w.time_stamp)=extract(hour from t.pickup_datetime)
+group by w.condition
+) tt inner join 
+(select w.condition as condition2, count(w.condition) as cday
+from weather w
+group by w.condition) tt2 
+on tt.condition1=tt2.condition2
+where rownum<=100
+order by frequency desc
+
+
+8. As a New Yorker, where should I go to avoid crowded places given a specific time slot? (represented by ”givenHour” and “givenDay”)
+
+select *
+from (
+select t.pickup_longitude, t.pickup_latitude, count (*) as num
+from trip t
+where extract(HOUR from t.pickup_datetime) = 21 and extract(DAY from t.pickup_datetime) = 6
+group by t.pickup_longitude, t.pickup_latitude
+order by num asc
+)
+where rownum<=20
+
+
+9. How does holiday affect pickups (what’s the average pickup difference between a holiday and a normal day)?
+
+select (t1.n1/t1.hday)-(t2.n2/t2.nonHday) as avgDifferencePerDay
+from
+(select count(distinct h.holiday_date) as hday, count(*) as n1
+from holiday h inner join trip t
+on to_timestamp(h.HOLIDAY_DATE)=(t.pickup_datetime)) t1,
+(select count(distinct t.pickup_datetime) as nonHday, count(*) as n2
+from holiday h right join trip t
+on to_timestamp(h.holiday_date)=(t.pickup_datetime)
+where h.holiday_date is NULL) t2
+
+
+
+10. What are the top 5 holidays on which people are most likely to travel by Uber?
+
+select * 
+from
+(
+select h.Holiday_name, count(t.pickup_datetime) as num
+from holiday h inner join trip t
+on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')
+group by h.Holiday_name
+order by num desc)
+where rownum<=5;
+
+
+11. Given a specific weather, where is it most likely to be busy?
+
+select *
+from
+(
+select t.pickup_longitude, t.pickup_latitude, count(*) as num
+from weather w inner join trip t
+on extract(day from w.time_stamp)=extract(day from t.pickup_datetime) and extract(hour from w.time_stamp)=extract(hour from t.pickup_datetime) 
+where w.condition='Clear'
+group by t.pickup_longitude, t.pickup_latitude
+order by num desc
+)
+where rownum<=5
+
+12. Pickups on each holiday
+select t1.holiday_name, count (*) as num
+from (select *
+from holiday h inner join trip t
+on to_char(to_timestamp(h.HOLIDAY_DATE), 'MM/DD/YYYY') = to_char(t.pickup_datetime, 'MM/DD/YYYY')) t1
+group by t1.holiday_name
+order by num desc;
