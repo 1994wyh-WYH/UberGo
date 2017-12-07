@@ -35,9 +35,9 @@
            
             <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="0" > What time in a day has most pickups? <br>
             <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="1" > What day of a week has most pickups? <br>
-            <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="2" > What is the total difference between number of holiday pickups and non-holiday pickups? <br>
             <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="3" > Whether is it likely to be busy when it rains or snows? <br>
             <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="4" > Which kind of weather will cause the most increase in passenger number? <br>
+            <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="2" > What is the total difference between number of holiday pickups and non-holiday pickups? <br>
             <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="5" > How does holiday affect pickups (what’s the average pickup difference between a holiday and a normal day)? <br>
             <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="6" > What are the top 5 holidays on which people are most likely to travel by Uber? <br>
             <input type="radio" name="queryNumber" ng-model="queryNumber" ng-value="7" > Pickups on each holiday? <br>
@@ -127,7 +127,7 @@
                 </div>
 
                 <div ng-switch-when="5">
-                    <h2> Q6: Busiest weekday: </h2>
+                    <h2> Q6: Difference  between holidays and no-holidays: </h2>
                         <table border="0" cellpadding="10" cellspacing="1" width="800" align="center"> 
                             <tr>
                                 <td> <strong>Average difference per day</strong> </td>
