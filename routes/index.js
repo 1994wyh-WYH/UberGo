@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var mongoose = require('mongoose');
+var bodyparser = require('body-parser');
+var cors = require('cors');
 
 // Connect string to MySQL
 var oracledb  = require('oracledb');
@@ -10,6 +13,22 @@ var connAttrs = {
   password : '550UberGo',
   connectString: "//cis550.cxzyd6qo9cfb.us-east-1.rds.amazonaws.com:1521/orcl"
 };
+
+// Restaurant Schema
+//const mongoose = require('mongoose');
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/rest');
+
+mongoose.connection.on('connected', ()=>{
+    console.log('MongoDB connected at port');
+});
+
+
+//MongoDB query
+var schema = new mongoose.Schema({_id:'string', restaurant_name:'string', latitude:'string', longitude:'string', rating:'number'}, {collection:'rest'});
+var Rest = mongoose.model('rest', schema, 'rest');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -37,6 +56,22 @@ router.post('/insert', function(req, res, next) {
     }  
     });
 });
+//MongoDB query
+router.get('/dataM/:longitude/:latitude', function(req, res){
+  var lonL = req.params.longitude-0.005;
+  var lonH = req.params.longitude+0.005;
+  var latL = req.params.latitude-0.005;
+  var latH = req.params.latitude+0.005;
+
+  var quer = Rest.find({$and:[{longitude:{$gte:lonH}},{longitude:{$lt:lonL}},{latitude:{$gte:latL}},{latitude:{$lt:latH}}]});//{$gte:req.params.longitude}});
+  var c = quer.count();
+  //console.log('long is %s', lonL);
+  quer.exec(function(err,resta){
+  if(err) return handleError(err);
+  console.log('%s', resta);
+  res.json('{'+resta+'}');
+});
+});
 
 router.get('/data/:year/:month/:day/:hour/:weekday/:fog/:rain/:snow', function(req,res) {
   // use console.log() as print() in case you want to debug, example below:
@@ -55,7 +90,7 @@ router.get('/data/:year/:month/:day/:hour/:weekday/:fog/:rain/:snow', function(r
   var snowquery = ' w.snow = ';
 
 
-  var groupBy = ' group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=10';
+  var groupBy = ' group by t.pickup_longitude, t.pickup_latitude order by num desc) where rownum<=5';
   // you may change the query during implementation
   var year = req.params.year;
   var month = req.params.month;
