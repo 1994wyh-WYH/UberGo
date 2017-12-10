@@ -1,6 +1,34 @@
 var app = angular.module('angularjsNodejsTutorial',[]);
+
+app.controller('reportController', function($scope, $http) {
+        $scope.message="";
+        $scope.submit = function() {
+        var queryNumber = $scope.queryNumber;   
+        var request = $http.get('/data/' + queryNumber);
+        console.log('after requts' + request);
+        console.log(request);
+        request.success(function(data) {
+            $scope.data = data;
+          //  console.log("data here " + data);
+        });
+        request.error(function(data){
+            console.log('err');
+        });
+    }; 
+});
+
 app.controller('myController', function($scope, $http) {
         $scope.message="";
+	$scope.SubmitM = function(){
+	var longitude = !!$scope.longitude ? $scope.longitude : undefined;
+	var latitude = !! $scope.latitude ? $scope.latitude: undefined;
+	var numRest = 0;
+	var request = $http.get('/dataM/'+longitude+'/'+latitude);
+	request.success(function(dataM){
+	$scope.dataM=dataM;
+	console.log(dataM);
+});
+}
         $scope.Submit = function() {
         var year = !!$scope.year ? $scope.year : undefined;
         var month = !!$scope.month ? $scope.month : undefined;
@@ -19,6 +47,8 @@ app.controller('myController', function($scope, $http) {
             
             $scope.data = data;
              // Convert the results into Google Map Format
+
+	    
             locations = convertToMapPoints(data);
                 initialize(40, -70);
         });
@@ -100,25 +130,7 @@ var initialize = function(latitude, longitude) {
     }; 
 });
 
-app.controller('insertController', function($scope, $http) {
-        $scope.message="";
-        $scope.Insert = function() {
-        var data = {}
-        data.login = !!$scope.login ? $scope.login : "";
-        data.name = !!$scope.name ? $scope.name : "";
-        data.sex = !!$scope.sex ? $scope.sex : "";
-        data.RelationshipStatus = !!$scope.RelationshipStatus ? $scope.RelationshipStatus : "";
-        data.Birthyear = !!$scope.Birthyear ? $scope.Birthyear : "";
-        console.log(data);
-        var request = $http.post('/insert/', data);
-        request.success(function(data) {
-            document.getElementById('insert-result-msg').textContent ='Insertion succeeded';
-        });
-        request.error(function(data){
-            document.getElementById('insert-result-msg').textContent = 'Insertion failed';
-        });
-    };
-});
+
 
 // To implement "Insert a new record", you need to:
 // - Create a new controller here

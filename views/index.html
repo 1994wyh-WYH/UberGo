@@ -53,14 +53,17 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <li class="active"><a href="/">SearchPage</a></li>
                     <li><a href="/insert">Insert a new record</a></li>
-                    <li><a href="/reference">Reference</a></li>
+                    <li><a href="/report">Report</a></li>
+
                 </div>
+
             </div>
+
         </nav>
          <div class="container">
             <!-- Main component for a primary marketing message or call to action-->
             <div class="jumbotron">
-	<div class="fb-login-button" data-width="100" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+		<div class="fb-login-button" data-width="100" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
          <div ng-controller="myController">
         <p><span aria-hidden="true" class="glyphicon text-primary glyphicon-search"></span> Please enter factors you are interested in:<br/>
             Year <input name="year" ng-model="year" value="">   Month <input name="month" ng-model="month" value=""><br/><br/>
@@ -83,10 +86,10 @@
             <input type="checkbox" name="snow" ng-model="snow" ng-true-value="'1'" 
             ng-false-value=""> snow <br/><br/>
             <button type="button" ng-click="Submit()" class="button">UberGo!</button>
-
+	
 
         </p>
-        <!-- Custom styles for this template
+       
         <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
             <tr> 
             <td> Longitude </td>
@@ -97,7 +100,16 @@
             <td> {{x.PICKUP_LATITUDE}} </td>
             <td> {{x.NUM}} </td>
             </tr>
-        </table>-->
+        </table>
+	<p>Longitude <input name="longitude" ng-model="longitude" value="">   Latitude <input name="latitude" ng-model="latitude" value=""><br/><br/>
+<button type="button" ng-click="SubmitM()" class="button">Get Restaurant</button></p>
+ <table border="0" cellpadding="10" cellspacing="1" width="500" align="center"> 
+            <tr> 
+            <td> Restaurants </td>
+            <tr ng-repeat="x in [1]"> 
+            <td> {{dataM}} </td>
+            </tr>
+        </table>
 
             <br/>
          

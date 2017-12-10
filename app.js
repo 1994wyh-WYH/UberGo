@@ -4,8 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var cors = require('cors');
 
-var index = require('./routes/index');
+var index = require('./routes/index');//route
 
 var app = express();
 
@@ -20,6 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 app.use('/', index);
 
@@ -40,6 +43,13 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render(err);
 });
+
+// mongoose.connect('mongodb://localhost:27017/rest');
+
+// mongoose.connection.on('connected', ()=>{
+//     console.log('MongoDB connected at port 27017');
+// });
+
 
 app.listen('8080', function(){
 	console.log('Server running on port 8080');
