@@ -73,7 +73,8 @@ app.controller('myController', function($scope, $http) {
                 locations.push({
                     latlon: new google.maps.LatLng(user.PICKUP_LATITUDE, user.PICKUP_LONGITUDE),
                     message: new google.maps.InfoWindow({
-                        content: "rank " + (i + 1) + " counts " + user.NUM,
+                        content: "rank " + (i + 1) + " counts " + user.NUM + " lat: " 
+                        + user.PICKUP_LATITUDE + " lon: " + user.PICKUP_LONGITUDE,
                         maxWidth: 320
                     }),
                     username: 'name',

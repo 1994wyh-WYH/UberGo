@@ -18,7 +18,7 @@ var connAttrs = {
 //const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/rest');
+//mongoose.connect('mongodb://localhost:27017/rest');
 
 mongoose.connection.on('connected', ()=>{
     console.log('MongoDB connected at port');
