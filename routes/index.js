@@ -39,9 +39,7 @@ router.get('/reference', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'reference.html'));
 });
 
-router.get('/insert', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
-});
+ 
 
 router.get('/report', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../', 'views', 'report.html'));
